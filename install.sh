@@ -2,15 +2,11 @@
 #
 # Symlinks the workflows in this repo into Alfred, so edits here are live.
 #
-# Alfred identifies a workflow by its folder name, so each entry below pins a
-# fixed UUID. Changing one makes Alfred treat the workflow as a new install and
-# lose its configuration.
+# Alfred identifies a workflow by the UUID in its folder name, so each workflow
+# pins its own in an `alfred-uuid` file. Changing one makes Alfred treat the
+# workflow as a new install and lose its configuration.
 
 set -euo pipefail
-
-typeset -A WORKFLOWS=(
-	safari-control 72A4D10C-ED2D-4588-A9E6-52995EE1988E
-)
 
 repo_dir="${0:A:h}"
 
@@ -25,21 +21,25 @@ if [[ ! -d "$workflows_dir" ]]; then
 	exit 1
 fi
 
-for name uuid in ${(kv)WORKFLOWS}; do
-	source_dir="$repo_dir/$name"
-	target="$workflows_dir/user.workflow.$uuid"
+for source_dir in "$repo_dir"/*(N/); do
+	[[ -f "$source_dir/info.plist" ]] || continue
 
-	if [[ ! -d "$source_dir" ]]; then
-		print -u2 "No such workflow in this repo: $name"
+	name="${source_dir:t}"
+	uuid_file="$source_dir/alfred-uuid"
+
+	if [[ ! -f "$uuid_file" ]]; then
+		print -u2 "$name has no alfred-uuid. Create one: uuidgen > '$uuid_file'"
 		exit 1
 	fi
+
+	uuid=$(<"$uuid_file")
+	target="$workflows_dir/user.workflow.$uuid"
 
 	if [[ -e "$target" && ! -L "$target" ]]; then
 		print -u2 "$target is a real folder, not a link. Remove it in Alfred first."
 		exit 1
 	fi
 
-	chmod +x "$source_dir"/scripts/*.applescript(N)
 	ln -sfn "$source_dir" "$target"
 	print "linked $name -> user.workflow.$uuid"
 done

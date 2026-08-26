@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.caiogondim.alfred.ghosttycontrol</string>
+	<key>connections</key>
+	<dict>
+		<key>B60780B1-9411-411F-AF81-82F29A6DE66C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>FD9E6D3B-F54E-4184-A7C8-83ADCD2D32C8</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>FD9E6D3B-F54E-4184-A7C8-83ADCD2D32C8</key>
+		<array/>
+	</dict>
+	<key>createdby</key>
+	<string>Caio Gondim</string>
+	<key>description</key>
+	<string>Open Ghostty windows in the current space</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Ghostty Control</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>gw</string>
+				<key>subtext</key>
+				<string>Open a new Ghostty window in the current space</string>
+				<key>text</key>
+				<string>New Ghostty Window</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>B60780B1-9411-411F-AF81-82F29A6DE66C</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string></string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>./scripts/new-window.applescript</string>
+				<key>type</key>
+				<integer>8</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>FD9E6D3B-F54E-4184-A7C8-83ADCD2D32C8</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Type `gw` for a new Ghostty window. It opens in the space you are currently in, and works when Ghostty is not running.
+
+Uses Ghostty's own AppleScript `new window` command, so it needs Automation permission for Ghostty but no Accessibility permission.</string>
+	<key>uidata</key>
+	<dict>
+		<key>B60780B1-9411-411F-AF81-82F29A6DE66C</key>
+		<dict>
+			<key>xpos</key>
+			<integer>40</integer>
+			<key>ypos</key>
+			<integer>40</integer>
+		</dict>
+		<key>FD9E6D3B-F54E-4184-A7C8-83ADCD2D32C8</key>
+		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
+			<key>ypos</key>
+			<integer>40</integer>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
+	<key>version</key>
+	<string>1.0.0</string>
+	<key>webaddress</key>
+	<string>caiogondim.com</string>
+</dict>
+</plist>
