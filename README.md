@@ -19,16 +19,36 @@ it rewrites `info.plist` as a binary plist. Run
 `plutil -convert xml1 <workflow>/info.plist` before committing.
 
 `install.sh` treats every folder holding an `info.plist` as a workflow. To add
-one, give it a UUID of its own — `uuidgen > <workflow>/alfred-uuid`. Alfred
-identifies a workflow by that UUID, so once it is set, leave it alone.
+one, copy the nearest existing workflow and then:
+
+```sh
+uuidgen > <workflow>/alfred-uuid          # Alfred's identity for it; never change it later
+sips -s format png --resampleHeightWidthMax 256 \
+  /Applications/<App>.app/Contents/Resources/<Icon>.icns \
+  --out <workflow>/icon.png
+```
+
+Then edit `info.plist`: `bundleid`, `name`, `description`, `readme`, and the
+keyword object's `keyword`, `text`, and `subtext`. The object UUIDs inside a
+plist only have to be unique within that one file, so copied ones are fine.
 
 ## Workflows
 
 Every workflow here opens its window in the space you are currently in, and
-works when its app is not running. Both depend on ordering: the window is made
-first, and the app is activated only after. Activating first makes macOS switch
-to whichever space already holds that app's windows, and the new window lands
-over there.
+works when its app is not running. They all depend on ordering: the window is
+made first, and the app is activated only after. Activating first makes macOS
+switch to whichever space already holds that app's windows, and the new window
+lands over there.
+
+### Finder Control
+
+| Keyword | Action |
+| --- | --- |
+| `fw` | New Finder window at home, filled, no sidebar |
+
+The window is sized by triggering `Window ▸ Fill` rather than by setting its
+bounds, so it follows whatever tiled window margins you have set. Fill is a
+menu action with no AppleScript equivalent, hence the System Events click.
 
 ### Ghostty Control
 
@@ -55,5 +75,5 @@ right after.
 
 Alfred needs, under System Settings ▸ Privacy & Security:
 
-- **Automation** → Safari, Ghostty, and System Events
-- **Accessibility** → for the `swp` menu click
+- **Automation** → Finder, Ghostty, Safari, and System Events
+- **Accessibility** → for the workflows that click menu items

@@ -21,6 +21,11 @@ if [[ ! -d "$workflows_dir" ]]; then
 	exit 1
 fi
 
+# Everything is checked before anything is linked, so a repo that fails these
+# checks leaves the previous install untouched.
+
+typeset -A uuid_of owner_of
+
 for source_dir in "$repo_dir"/*(N/); do
 	[[ -f "$source_dir/info.plist" ]] || continue
 
@@ -33,14 +38,27 @@ for source_dir in "$repo_dir"/*(N/); do
 	fi
 
 	uuid=$(<"$uuid_file")
-	target="$workflows_dir/user.workflow.$uuid"
 
+	# Copying a workflow folder is the documented way to add one, so a
+	# forgotten uuidgen is the likely mistake. Both would link to the same
+	# target and one would silently win.
+	if [[ -n "${owner_of[$uuid]-}" ]]; then
+		print -u2 "$name copied ${owner_of[$uuid]}'s UUID. Run: uuidgen > '$uuid_file'"
+		exit 1
+	fi
+
+	target="$workflows_dir/user.workflow.$uuid"
 	if [[ -e "$target" && ! -L "$target" ]]; then
 		print -u2 "$target is a real folder, not a link. Remove it in Alfred first."
 		exit 1
 	fi
 
-	ln -sfn "$source_dir" "$target"
+	uuid_of[$name]="$uuid"
+	owner_of[$uuid]="$name"
+done
+
+for name uuid in ${(kv)uuid_of}; do
+	ln -sfn "$repo_dir/$name" "$workflows_dir/user.workflow.$uuid"
 	print "linked $name -> user.workflow.$uuid"
 done
 
