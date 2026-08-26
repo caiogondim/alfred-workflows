@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.caiogondim.alfred.thingscontrol</string>
+	<key>connections</key>
+	<dict>
+		<key>0E02A4E7-15DF-4E1B-A8D4-E8E0ED249758</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7148307A-B89E-447E-9D7B-E94705E6DEE0</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>7148307A-B89E-447E-9D7B-E94705E6DEE0</key>
+		<array/>
+	</dict>
+	<key>createdby</key>
+	<string>Caio Gondim</string>
+	<key>description</key>
+	<string>Add tasks to the Things inbox</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Things Control</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>td</string>
+				<key>subtext</key>
+				<string>{query}</string>
+				<key>text</key>
+				<string>Add to Things Inbox</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>0E02A4E7-15DF-4E1B-A8D4-E8E0ED249758</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string></string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>./scripts/add-to-inbox.applescript</string>
+				<key>type</key>
+				<integer>8</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>7148307A-B89E-447E-9D7B-E94705E6DEE0</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Type `td` followed by a task title to drop it in the Things Inbox. Everything after the keyword is the title, so any character is safe.
+
+Nothing is shown afterwards and Things is not brought to the front.</string>
+	<key>uidata</key>
+	<dict>
+		<key>0E02A4E7-15DF-4E1B-A8D4-E8E0ED249758</key>
+		<dict>
+			<key>xpos</key>
+			<integer>40</integer>
+			<key>ypos</key>
+			<integer>40</integer>
+		</dict>
+		<key>7148307A-B89E-447E-9D7B-E94705E6DEE0</key>
+		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
+			<key>ypos</key>
+			<integer>40</integer>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
+	<key>version</key>
+	<string>1.0.0</string>
+	<key>webaddress</key>
+	<string>caiogondim.com</string>
+</dict>
+</plist>

@@ -28,17 +28,25 @@ sips -s format png --resampleHeightWidthMax 256 \
   --out <workflow>/icon.png
 ```
 
+Newer apps ship no `.icns` at all — their icon lives in an asset catalog, and
+`CFBundleIconFile` names an entry inside it rather than a file. Ask the system
+for the icon instead, then downsize it with the `sips` line above:
+
+```sh
+osascript scripts/app-icon.applescript /Applications/<App>.app "$PWD/<workflow>/icon.png"
+```
+
 Then edit `info.plist`: `bundleid`, `name`, `description`, `readme`, and the
 keyword object's `keyword`, `text`, and `subtext`. The object UUIDs inside a
 plist only have to be unique within that one file, so copied ones are fine.
 
 ## Workflows
 
-Every workflow here opens its window in the space you are currently in, and
-works when its app is not running. They all depend on ordering: the window is
-made first, and the app is activated only after. Activating first makes macOS
-switch to whichever space already holds that app's windows, and the new window
-lands over there.
+The window-opening ones all open in the space you are currently in, and work
+when their app is not running. They depend on ordering: the window is made
+first, and the app is activated only after. Activating first makes macOS switch
+to whichever space already holds that app's windows, and the new window lands
+over there.
 
 ### Finder Control
 
@@ -71,9 +79,18 @@ Safari has no AppleScript command for private browsing, so `swp` clicks
 it anchors Safari to the current space with a throwaway window that it closes
 right after.
 
+### Things Control
+
+| Keyword | Action |
+| --- | --- |
+| `td <task>` | Add a task to the Things inbox |
+
+Everything after the keyword is the title, so any character is safe in a task.
+Nothing is shown afterwards and Things is not brought to the front.
+
 ## Permissions
 
 Alfred needs, under System Settings ▸ Privacy & Security:
 
-- **Automation** → Finder, Ghostty, Safari, and System Events
+- **Automation** → Finder, Ghostty, Safari, Things 3, and System Events
 - **Accessibility** → for the workflows that click menu items
