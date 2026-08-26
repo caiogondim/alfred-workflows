@@ -31,3 +31,10 @@ else if (count of windows of application "Safari") = 2 then
 	-- several windows survives.
 	tell application "Safari" to close window 2
 end if
+
+-- Fill applies to the front window, and the private window stays in front
+-- while the anchor closes behind it, so this has to come last.
+
+tell application "System Events" to tell process "Safari"
+	click menu item "Fill" of menu "Window" of menu bar 1
+end tell
