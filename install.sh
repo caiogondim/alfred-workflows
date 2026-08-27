@@ -16,10 +16,14 @@ prefs_dir=$(
 )
 workflows_dir="$prefs_dir/workflows"
 
-if [[ ! -d "$workflows_dir" ]]; then
-	print -u2 "Alfred workflows folder not found: $workflows_dir"
+if [[ ! -d "$prefs_dir" ]]; then
+	print -u2 "Alfred preferences folder not found: $prefs_dir"
 	exit 1
 fi
+
+# A fresh Alfred install has no workflows folder until the first workflow
+# is added, so create it rather than bail.
+mkdir -p "$workflows_dir"
 
 # Everything is checked before anything is linked, so a repo that fails these
 # checks leaves the previous install untouched.
