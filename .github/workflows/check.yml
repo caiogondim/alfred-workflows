@@ -1,0 +1,27 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A new push supersedes the run already in flight for the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    # plutil and osacompile are macOS-only, and the recipes are zsh.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - run: make check
+
+      # A committed info.plist should already be the XML plutil produces. This
+      # rewrites the checkout, so it goes last.
+      - name: make fmt is a no-op
+        run: |
+          make fmt
+          git diff --exit-code

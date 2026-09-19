@@ -138,6 +138,14 @@ for script in $(SCRIPTS); do
 	rm -rf "$$tmp/out.scpt"
 done
 
+# CI cannot exercise `make install`, having no Alfred to link into, so the
+# recipe bodies are at least parsed. They are readable here because each
+# `define` block above is exported for the recipe shells.
+for recipe in INSTALL FMT CHECK; do
+	print -r -- "$${(P)recipe}" | zsh -n \
+		|| fail "the $$recipe recipe has a syntax error"
+done
+
 [[ $$failed -eq 0 ]] || exit 1
 print "ok"
 endef
