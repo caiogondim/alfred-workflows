@@ -14,39 +14,7 @@ This symlinks each workflow folder into Alfred and prints what it linked.
 Relaunch Alfred afterwards. Because the workflows are links, an edit in this
 repo takes effect on the next trigger — no reinstall.
 
-`make` on its own lists the targets. The other two are `make fmt` and
-`make check`.
-
-Editing a workflow through Alfred's own UI writes back through the symlink, but
-it rewrites `info.plist` as a binary plist. `make fmt` converts them all back to
-XML, and `make check` fails on one you forgot — along with a plist that no
-longer parses, a script action pointing at a file that is not there, a missing
-or copied `alfred-uuid`, and an AppleScript that does not compile.
-
-`make install` treats every folder holding an `info.plist` as a workflow. To add
-one, copy the nearest existing workflow and then:
-
-```sh
-uuidgen > <workflow>/alfred-uuid          # Alfred's identity for it; never change it later
-sips -s format png --resampleHeightWidthMax 256 \
-  /Applications/<App>.app/Contents/Resources/<Icon>.icns \
-  --out <workflow>/icon.png
-```
-
-Newer apps ship no `.icns` at all — their icon lives in an asset catalog, and
-`CFBundleIconFile` names an entry inside it rather than a file. Ask the system
-for the icon instead, then downsize it with the `sips` line above:
-
-```sh
-osascript scripts/app-icon.applescript /Applications/<App>.app "$PWD/<workflow>/icon.png"
-```
-
-Then edit `info.plist`: `bundleid`, `name`, `description`, `readme`, each
-keyword object's `keyword`, `text`, and `subtext`, and each script action's
-`scriptfile` if you renamed a script. The object UUIDs inside a plist only have
-to be unique within that one file, so copied ones are fine.
-
-Then `make check` and `make install`.
+`make` on its own lists the targets.
 
 ## Workflows
 
@@ -107,6 +75,39 @@ right after.
 
 Everything after the keyword is the title, so any character is safe in a task.
 Nothing is shown afterwards and Things is not brought to the front.
+
+## Developing
+
+Editing a workflow through Alfred's own UI writes back through the symlink, but
+it rewrites `info.plist` as a binary plist. `make fmt` converts them all back to
+XML, and `make check` fails on one you forgot — along with a plist that no
+longer parses, a script action pointing at a file that is not there, a missing
+or copied `alfred-uuid`, and an AppleScript that does not compile.
+
+`make install` treats every folder holding an `info.plist` as a workflow. To add
+one, copy the nearest existing workflow and then:
+
+```sh
+uuidgen > <workflow>/alfred-uuid          # Alfred's identity for it; never change it later
+sips -s format png --resampleHeightWidthMax 256 \
+  /Applications/<App>.app/Contents/Resources/<Icon>.icns \
+  --out <workflow>/icon.png
+```
+
+Newer apps ship no `.icns` at all — their icon lives in an asset catalog, and
+`CFBundleIconFile` names an entry inside it rather than a file. Ask the system
+for the icon instead, then downsize it with the `sips` line above:
+
+```sh
+osascript scripts/app-icon.applescript /Applications/<App>.app "$PWD/<workflow>/icon.png"
+```
+
+Then edit `info.plist`: `bundleid`, `name`, `description`, `readme`, each
+keyword object's `keyword`, `text`, and `subtext`, and each script action's
+`scriptfile` if you renamed a script. The object UUIDs inside a plist only have
+to be unique within that one file, so copied ones are fine.
+
+Then `make check` and `make install`.
 
 ## Permissions
 
