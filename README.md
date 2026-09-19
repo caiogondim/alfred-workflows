@@ -7,18 +7,23 @@ it, and keeps its scripts as plain files instead of strings inside the plist.
 ## Install
 
 ```sh
-./install.sh
+make install
 ```
 
 This symlinks each workflow folder into Alfred and prints what it linked.
 Relaunch Alfred afterwards. Because the workflows are links, an edit in this
 repo takes effect on the next trigger — no reinstall.
 
-Editing a workflow through Alfred's own UI writes back through the symlink, but
-it rewrites `info.plist` as a binary plist. Run
-`plutil -convert xml1 <workflow>/info.plist` before committing.
+`make` on its own lists the targets. The other two are `make fmt` and
+`make check`.
 
-`install.sh` treats every folder holding an `info.plist` as a workflow. To add
+Editing a workflow through Alfred's own UI writes back through the symlink, but
+it rewrites `info.plist` as a binary plist. `make fmt` converts them all back to
+XML, and `make check` fails on one you forgot — along with a plist that no
+longer parses, a script action pointing at a file that is not there, a missing
+or copied `alfred-uuid`, and an AppleScript that does not compile.
+
+`make install` treats every folder holding an `info.plist` as a workflow. To add
 one, copy the nearest existing workflow and then:
 
 ```sh
@@ -40,6 +45,8 @@ Then edit `info.plist`: `bundleid`, `name`, `description`, `readme`, each
 keyword object's `keyword`, `text`, and `subtext`, and each script action's
 `scriptfile` if you renamed a script. The object UUIDs inside a plist only have
 to be unique within that one file, so copied ones are fine.
+
+Then `make check` and `make install`.
 
 ## Workflows
 
