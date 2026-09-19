@@ -134,6 +134,20 @@ done
 tmp=$$(mktemp -d)
 trap 'rm -rf "$$tmp"' EXIT
 for script in $(SCRIPTS); do
+	# osacompile resolves an app's terminology as it compiles, so a script
+	# that says `new window` or `to do` only compiles where that app is
+	# installed. CI has neither Ghostty nor Things.
+	missing=()
+	for app in $${(fu)"$$(grep -o 'application "[^"]*"' "$$script" | cut -d'"' -f2)"}; do
+		osascript -e "id of application \"$$app\"" >/dev/null 2>&1 \
+			|| missing+=("$$app")
+	done
+
+	if (( $$#missing )); then
+		print "skipped $$script, no $${(j:, :)missing}"
+		continue
+	fi
+
 	osacompile -o "$$tmp/out.scpt" "$$script" || fail "$$script does not compile"
 	rm -rf "$$tmp/out.scpt"
 done
